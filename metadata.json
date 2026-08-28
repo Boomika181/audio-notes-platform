@@ -1,0 +1,6 @@
+{
+  "name": "Audio Notes Platform",
+  "description": "Professional audio transcription and summarization platform using Gnani.ai STT and Gemini AI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

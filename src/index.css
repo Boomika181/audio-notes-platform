@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-blue: #2563eb;
+  --color-brand-accent: #06b6d4;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-serif: "DM Serif Display", serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-sans: "Inter", sans-serif;
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+  
+  body {
+    background-color: #08080a;
+    color: #f4f4f5;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+  }
+}
+
+/* Technical Grid Pattern */
+.bg-tech-grid {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+.bg-radial-gradient {
+  background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.12) 0%, rgba(8, 8, 10, 0) 70%);
+}
+
+.tech-border {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tech-card {
+  background-color: rgba(18, 18, 24, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.tech-card:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #08080a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
