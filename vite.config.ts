@@ -14,6 +14,7 @@ export default defineConfig(() => {
     server: {
       hmr: false,
       watch: null,
+      allowedHosts: ['audio-notes-platform-1-ad5s.onrender.com'],
     },
   };
 });
