@@ -135,13 +135,22 @@ export class GnaniService {
         formData.append('format', 'transcribe');
         formData.append('itn_native_numerals', 'true');
 
-        const response = await axios.post('https://api.vachana.ai/stt/v3', formData, {
-          headers: {
-            ...formData.getHeaders(),
-            'X-API-Key-ID': apiKey
-          },
-          timeout: 90000 
-        });
+        let response;
+        try {
+          response = await axios.post('https://api.vachana.ai/stt/v3', formData, {
+            headers: {
+              ...formData.getHeaders(),
+              'X-API-Key-ID': apiKey
+            },
+            timeout: 90000 
+          });
+        } catch (err: any) {
+          const status = err.response?.status;
+          const data = err.response?.data;
+          const safeBody = typeof data === 'object' ? JSON.stringify(data) : (data || err.message);
+          console.error(`[GnaniService][ERROR] Chunk ${i + 1}/${chunks.length} failed. HTTP Status: ${status ?? 'N/A'}. Gnani Response: ${safeBody}`);
+          throw err;
+        }
 
         const resData = response.data;
         const partTranscript = resData?.transcript || resData?.result?.transcript || resData?.data?.transcript || resData?.text;
@@ -149,6 +158,8 @@ export class GnaniService {
         if (partTranscript && typeof partTranscript === 'string' && partTranscript.trim().length > 0) {
           transcripts.push(partTranscript.trim());
         } else if (resData && resData.success === false) {
+          const safeBody = typeof resData === 'object' ? JSON.stringify(resData) : resData;
+          console.error(`[GnaniService][ERROR] Chunk ${i + 1}/${chunks.length} returned success=false. Gnani Response: ${safeBody}`);
           throw new Error(resData.message || resData.error || `Gnani STT returned failure status on chunk ${i+1}`);
         }
       }
@@ -161,7 +172,10 @@ export class GnaniService {
       throw new Error('No valid transcript returned from Gnani STT API');
     }, {
       onRetry: (error, attempt) => {
-        console.warn(`[GnaniService][RETRY] Attempt ${attempt} failed: ${error.message}`);
+        const status = error.response?.status;
+        const data = error.response?.data;
+        const safeBody = typeof data === 'object' ? JSON.stringify(data) : (data || error.message);
+        console.warn(`[GnaniService][RETRY] Attempt ${attempt} failed with HTTP Status: ${status ?? 'N/A'}. Details: ${safeBody}`);
       }
     });
   }
